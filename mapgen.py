@@ -119,7 +119,7 @@ def render_map(gpx_files, output_path, basemap='OpenStreetMap.Mapnik'):
         x, y = zip(*points_proj)
         fig, ax = plt.subplots(figsize=(12, 10), dpi=400)
         ax.plot(x, y, color='red', linewidth=3, zorder=2)
-        ctx.add_basemap(ax, crs='epsg:3857', source=ctx.providers.get(basemap), zoom=13)
+        ctx.add_basemap(ax, crs='epsg:3857', source=ctx.providers.get(basemap), zoom=10)
 
 
 
