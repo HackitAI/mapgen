@@ -103,4 +103,5 @@ def zip_download():
     return send_file(memory_file, download_name='maps.zip', as_attachment=True)
 
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
     app.run(debug=True)
