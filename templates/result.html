@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapGen - Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      padding: 2rem;
+    }
+    header {
+      background: #b00;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    .controls form,
+    .controls a {
+      display: inline-block;
+      margin: 0 1rem;
+    }
+    .controls button,
+    .controls a {
+      background: #c00;
+      color: white;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .map-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .map-tile {
+      background: #222;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      width: 320px;
+    }
+    .map-tile img {
+      max-width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .map-tile a {
+      display: block;
+      margin-top: 0.5rem;
+      color: #eee;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🗺️ MapGen - Result
+  </header>
+
+  <div class="controls">
+    <form action="/zip-download" method="POST">
+      {% for img_file in image_files %}
+        <input type="hidden" name="files" value="{{ img_file }}" />
+      {% endfor %}
+      <button type="submit">Save All</button>
+    </form>
+    <a href="{{ back_url }}">Start Over</a>
+  </div>
+
+  <div class="map-grid">
+    {% for img_file in image_files %}
+    <div class="map-tile">
+      <a href="{{ url_for('static', filename='output/' + img_file) }}" download>
+        <img src="{{ url_for('static', filename='output/' + img_file) }}" alt="Map Preview" />
+        <span>Day {{ loop.index }} of {{ image_files|length }}</span>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MapGen - GPX to PNG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 2rem;
+        }
+
+        header {
+            background: #db0700;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #222;
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="file"],
+        select {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background: #db0700;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            margin: 1rem auto 0;
+        }
+
+        select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+    </style>
+    <script>
+        const form = document.querySelector("form");
+        const progress = document.getElementById("progress");
+        const status = document.getElementById("progress-status");
+        const bar = document.getElementById("progress-bar");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // stop normal submission
+
+            progress.style.display = "block";
+            status.textContent = "Uploading GPX...";
+            bar.style.width = "20%";
+
+            setTimeout(() => {
+                status.textContent = "Fetching GPS coordinates...";
+                bar.style.width = "40%";
+            }, 1000);
+
+            setTimeout(() => {
+                status.textContent = "Parsing waypoints...";
+                bar.style.width = "60%";
+            }, 2000);
+
+            setTimeout(() => {
+                status.textContent = "Rendering map...";
+                bar.style.width = "80%";
+            }, 3000);
+
+            setTimeout(() => {
+                status.textContent = "Finalizing...";
+                bar.style.width = "95%";
+            }, 4000);
+
+            // Actually submit the form after progress finishes
+            setTimeout(() => {
+                form.submit();
+            }, 5000);
+        });
+    </script>
+
+
+
+</head>
+
+<body>
+    <header style="height:40px;">
+        🗺️ MapGen - GPX to PNG</header>
+
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="gpx_files">Choose GPX files:</label>
+        <input type="file" name="gpx_files" id="gpx_files" accept=".gpx" multiple required />
+
+        <label for="basemap">🗺️ Choose Map Layer:</label>
+        <select name="basemap" id="basemap" required>
+            <option value="OpenStreetMap.Mapnik">🧭 OSM Mapnik – Classic & clear</option>
+            <option value="CartoDB.Positron">🌤️ CartoDB Positron – Light & modern</option>
+            <option value="CartoDB.Voyager" selected>🛣️ CartoDB Voyager – Clean & labeled</option>
+            <option value="Esri.WorldStreetMap">🗺️ Esri World Street Map – Detailed streets</option>
+            <option value="Stamen.TonerLite">📰 Stamen Toner Lite – High contrast</option>
+            <option value="OpenTopoMap">⛰️ OpenTopoMap – Terrain & roads</option>
+        </select>
+
+
+
+        <div id="progress" style="display:none; text-align: center; margin-top: 2em;">
+            <div style="margin-bottom: 1em; font-size: 1.2em; color: #fff;">
+                ⏳ <span id="progress-status">Preparing upload...</span>
+            </div>
+            <div style="width: 80%; margin: 0 auto; background: #333; border-radius: 8px; overflow: hidden;">
+                <div id="progress-bar"
+                    style="width: 0%; height: 20px; background: #b00; border-radius: 8px; transition: width 0.5s;">
+                </div>
+            </div>
+        </div>
+
+
+        <button type="submit">Generate Maps</button>
+    </form>
+
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="MapGen Logo" style="vertical-align: middle; height: 50px; position: absolute; right: 30px; bottom: 30px;" />
+</body>
+
+</html>
