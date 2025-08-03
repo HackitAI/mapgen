@@ -102,6 +102,10 @@ def zip_download():
     memory_file.seek(0)
     return send_file(memory_file, download_name='maps.zip', as_attachment=True)
 
+@app.errorhandler(500)
+def internal_error(error):
+    return "500 error - something went wrong", 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
     app.run(debug=True)
